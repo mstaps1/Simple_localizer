@@ -92,10 +92,12 @@ class localizer_env(gym.Env):
                                                  np.sin(desired_action[1])])),
                            self.current_user_location)
         
+        # Is the agent within the search area
         in_area_mask = ((new_state[0] >= 0) & 
                         (new_state[1] >= 0) & 
                         (new_state[0] <= self.HEIGHT) & 
                         (new_state[1] <= self.WIDTH))
+        
         if(in_area_mask):
             self.current_user_location = new_state
             self.step_count = 1+ self.step_count
