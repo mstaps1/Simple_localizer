@@ -172,6 +172,7 @@ class Actor(nn.Module):
         
         
         log_prob = Normal(mu, std).log_prob(mu + e * std) - torch.log(1 - action.pow(2) + epsilon)
+        # needed so log prob can be used with critic
         log_prob = log_prob.sum(1,keepdim=True)
         return action, log_prob
         
@@ -466,8 +467,6 @@ class Agent():
         if self.FIXED_ALPHA == None:
             
             
-            print(f'   rewards {rewards.shape}, dones {dones.shape}, Q_target_next {Q_target_next.shape}')
-            print(f'log_pis_next {log_pis_next.shape} ')
             # Compute Q targets for current states (y_i)
             Q_targets = rewards.cpu() + (gamma * (1 - dones.cpu()) * (Q_target_next.cpu() - self.alpha * log_pis_next.squeeze(0).cpu()))
             
@@ -481,7 +480,7 @@ class Agent():
         Q_1 = self.critic1(states_1, states_2, actions).cpu()
         Q_2 = self.critic2(states_1, states_2, actions).cpu()
         
-        print(f'Q_1 shape {Q_1.shape}, Q_1_targets shape {Q_targets.shape}, Q_target1_next shape {Q_target_next.shape} ')
+
         critic1_loss = 0.5*F.mse_loss(Q_1, Q_targets.detach())
         critic2_loss = 0.5*F.mse_loss(Q_2, Q_targets.detach())
         

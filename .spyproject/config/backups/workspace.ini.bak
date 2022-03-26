@@ -6,5 +6,5 @@ save_non_project_files = False
 
 [main]
 version = 0.2.0
-recent_files = ['Localizer_env/envs/localizer_env.py', 'Localizer_env/envs/__init__.py', 'Localizer_env/__init__.py']
+recent_files = ['Localizer_env/envs/localizer_env.py', 'SAC_LSTM.py']
 
